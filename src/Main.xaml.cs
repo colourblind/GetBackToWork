@@ -90,6 +90,9 @@ namespace GetBackToWork
 
         private void Exit_Click(object sender, EventArgs e)
         {
+            // Finish off the current timeslice if the window is closed before stop is clicked
+            if (DateStarted != null)
+                GoButton_Click(this, new RoutedEventArgs());
             Close();
         }
 
