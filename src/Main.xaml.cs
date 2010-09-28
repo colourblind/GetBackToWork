@@ -37,6 +37,7 @@ namespace GetBackToWork
             SystemTrayIcon.ContextMenu = systemTrayContextMenu;
             SystemTrayIcon.Visible = true;
             SystemTrayIcon.Icon = new Icon(SystemIcons.Application, 40, 40);
+            SystemTrayIcon.Text = "Slacking off";
             SystemTrayIcon.Click += new EventHandler(SystemTrayIcon_Click);
 
             Hide();
@@ -83,7 +84,7 @@ namespace GetBackToWork
             else
             {
                 Show();
-                Focus();
+                Activate();
             }
         }
 
@@ -110,6 +111,7 @@ namespace GetBackToWork
                     DateStarted = DateTime.Now;
                     GoButton.Content = "Stop";
                     ClientComboBox.IsEnabled = false;
+                    SystemTrayIcon.Text = String.Format("{0} since {1}", ClientComboBox.SelectedValue, ((DateTime)DateStarted).ToString("hh:mm"));
                 }
                 else
                 {
@@ -120,6 +122,7 @@ namespace GetBackToWork
                     GoButton.Content = "Start";
                     ClientComboBox.IsEnabled = true;
                     NotesTextBox.Text = "";
+                    SystemTrayIcon.Text = "Slacking off";
                 }
 
                 Hide();
