@@ -6,9 +6,9 @@
     Closing="Window_Closing" Visibility="Hidden">
     <Grid Margin="10">
         <Button Name="GoButton" Content="Start" Height="40" Width="80" HorizontalAlignment="Right" VerticalAlignment="Center" Click="GoButton_Click" />
-        <Label Content="Client" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40" />
-        <ComboBox Name="ClientComboBox" VerticalAlignment="Top" Height="21.96" Margin="45,0,101,0" />
-        <Label Content="Notes" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="40" />
-        <TextBox Name="NotesTextBox" Height="20" VerticalAlignment="Bottom" Margin="45,0,101,0" />
+        <Label Content="Client" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" />
+        <ComboBox Name="ClientComboBox" VerticalAlignment="Top" Margin="45,0,101,10" />
+        <Label Content="Notes" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="45" />
+        <TextBox Name="NotesTextBox" VerticalAlignment="Bottom" Margin="45,0,101,0" />
     </Grid>
 </Window>
