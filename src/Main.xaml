@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Main" Height="75" Width="325" ResizeMode="NoResize" ShowInTaskbar="False" WindowStyle="None" 
     Background="{StaticResource BackgroundBrush}" BorderBrush="#282828" BorderThickness="1" Padding="0" Margin="0"
-    Closing="Window_Closing" Visibility="Hidden">
+    Closing="Window_Closing" Deactivated="Window_Deactivated" Visibility="Hidden">
     <Grid Margin="10">
         <Button Name="GoButton" Content="Start" Height="40" Width="80" HorizontalAlignment="Right" VerticalAlignment="Center" Click="GoButton_Click" />
         <Label Content="Client" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" />

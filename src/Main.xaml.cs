@@ -43,7 +43,7 @@ namespace GetBackToWork
             Hide();
 
             Left = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width - Width - 5;
-            Top = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height - Height - 5;
+            Top = 5;
 
             DateStarted = null;
             LoadSettings();
@@ -79,13 +79,8 @@ namespace GetBackToWork
 
         void SystemTrayIcon_Click(object sender, EventArgs e)
         {
-            if (Visibility == Visibility.Visible)
-                Hide();
-            else
-            {
-                Show();
-                Activate();
-            }
+            Show();
+            Activate();
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -94,6 +89,11 @@ namespace GetBackToWork
             if (DateStarted != null)
                 GoButton_Click(this, new RoutedEventArgs());
             Close();
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            Hide();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -115,6 +115,7 @@ namespace GetBackToWork
                     GoButton.Content = "Stop";
                     ClientComboBox.IsEnabled = false;
                     SystemTrayIcon.Text = String.Format("{0} since {1}", ClientComboBox.SelectedValue, ((DateTime)DateStarted).ToString("hh:mm"));
+                    Hide();
                 }
                 else
                 {
@@ -127,8 +128,6 @@ namespace GetBackToWork
                     NotesTextBox.Text = "";
                     SystemTrayIcon.Text = "Slacking off";
                 }
-
-                Hide();
             }
         }
 
