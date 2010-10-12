@@ -12,6 +12,16 @@
             <Setter Property="Foreground" Value="#707070" />
         </Style>
         
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Background" Value="#000000" />
+            <Setter Property="Foreground" Value="#707070" />
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="#000000" />
+            <Setter Property="Foreground" Value="#707070" />
+        </Style>
+        
         <Style TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
