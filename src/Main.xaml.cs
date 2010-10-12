@@ -31,6 +31,7 @@ namespace GetBackToWork
             InitializeComponent();
 
             System.Windows.Forms.ContextMenu systemTrayContextMenu = new System.Windows.Forms.ContextMenu();
+            systemTrayContextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Reports", new EventHandler(Reports_Click)));
             systemTrayContextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Exit", new EventHandler(Exit_Click)));
 
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon();
@@ -89,6 +90,13 @@ namespace GetBackToWork
             if (DateStarted != null)
                 GoButton_Click(this, new RoutedEventArgs());
             Close();
+        }
+
+        private void Reports_Click(object sender, EventArgs e)
+        {
+            SaveReport saveReport = new SaveReport();
+            saveReport.ShowDialog();
+            Hide();
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
