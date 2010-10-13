@@ -8,38 +8,50 @@
             <GradientStop Color="#181818" Offset="0.75" />
         </LinearGradientBrush>
         
+        <LinearGradientBrush x:Key="StartButtonBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Color="#007000" Offset="0.25" />
+            <GradientStop Color="#005000" Offset="0.75" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="StopButtonBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Color="#800000" Offset="0.25" />
+            <GradientStop Color="#600000" Offset="0.75" />
+        </LinearGradientBrush>
+        
         <Style TargetType="{x:Type Label}">
-            <Setter Property="Foreground" Value="#707070" />
+            <Setter Property="Foreground" Value="#a0a0a0" />
         </Style>
         
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Background" Value="#000000" />
-            <Setter Property="Foreground" Value="#707070" />
+            <Setter Property="Foreground" Value="#a0a0a0" />
         </Style>
 
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Background" Value="#000000" />
-            <Setter Property="Foreground" Value="#707070" />
+            <Setter Property="Foreground" Value="#a0a0a0" />
         </Style>
         
         <Style TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="5" BorderBrush="#707070" BorderThickness="2" Padding="10" Background="{TemplateBinding Background}">
+                        <Border CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" Padding="10" Background="{TemplateBinding Background}">
                             <Grid>
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" />
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" TextBlock.FontWeight="Bold" />
                             </Grid>
                         </Border>
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Control.Background">
+                                <Setter Property="Control.Foreground">
                                     <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                            <GradientStop Color="#404040" Offset="0.25" />
-                                            <GradientStop Color="#303030" Offset="0.75" />
-                                        </LinearGradientBrush>
+                                        <SolidColorBrush Color="#d0d0d0" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Control.BorderBrush">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#c0c0c0" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -55,7 +67,7 @@
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Foreground" Value="#707070" />
+            <Setter Property="Foreground" Value="#a0a0a0" />
         </Style>
     </Application.Resources>
 </Application>
