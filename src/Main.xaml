@@ -5,7 +5,7 @@
     Background="{StaticResource BackgroundBrush}" BorderBrush="#282828" BorderThickness="1" Padding="0" Margin="0"
     Closing="Window_Closing" Deactivated="Window_Deactivated" Visibility="Hidden">
     <Grid Margin="10">
-        <Button Name="GoButton" Content="Start" Height="40" Width="80" HorizontalAlignment="Right" VerticalAlignment="Center" Click="GoButton_Click" />
+        <Button Name="GoButton" Content="Start" Height="40" Width="80" HorizontalAlignment="Right" VerticalAlignment="Center" Click="GoButton_Click" Background="{StaticResource StartButtonBrush}" />
         <Label Content="Client" HorizontalAlignment="Left" VerticalAlignment="Top" Width="45" />
         <ComboBox Name="ClientComboBox" VerticalAlignment="Top" Margin="45,0,101,10" />
         <Label Content="Notes" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="45" />

@@ -126,6 +126,8 @@ namespace GetBackToWork
                     ClientComboBox.IsEnabled = false;
                     SystemTrayIcon.Text = String.Format("{0} since {1}", ClientComboBox.SelectedValue, ((DateTime)DateStarted).ToString("hh:mm"));
                     Hide();
+
+                    GoButton.Background = (System.Windows.Media.Brush)Application.Current.Resources["StopButtonBrush"];
                 }
                 else
                 {
@@ -137,6 +139,8 @@ namespace GetBackToWork
                     ClientComboBox.IsEnabled = true;
                     NotesTextBox.Text = "";
                     SystemTrayIcon.Text = "Slacking off";
+
+                    GoButton.Background = (System.Windows.Media.Brush)Application.Current.Resources["StartButtonBrush"];
                 }
             }
         }
