@@ -18,6 +18,7 @@ namespace GetBackToWork
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Report report = new Report(DateTime.Now.ToString("yyyy-MM") + ".csv", (DateTime)StartDatePicker.SelectedDate, (DateTime)EndDatePicker.SelectedDate);
+            report.Fluff = Convert.ToDecimal(FluffSlider.Value / 100);
 
             report.Create();
         }

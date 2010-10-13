@@ -28,15 +28,26 @@ namespace GetBackToWork
             set;
         }
 
+        public decimal Fluff
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Constructors
 
-        public Report(string filename, DateTime start, DateTime end)
+        public Report(string filename, DateTime start, DateTime end) : this(filename, start, end, 0)
+        {
+        }
+
+        public Report(string filename, DateTime start, DateTime end, decimal fluff)
         {
             Filename = filename;
             StartDate = start;
             EndDate = end;
+            Fluff = fluff;
         }
 
         #endregion
@@ -84,7 +95,7 @@ namespace GetBackToWork
                             hours = Convert.ToDecimal(row[3]);
                         }
 
-                        row[3] = hours + Convert.ToDecimal(timeSlice.EndTime.Subtract(timeSlice.StartTime).TotalHours);
+                        row[3] = hours + (Convert.ToDecimal(timeSlice.EndTime.Subtract(timeSlice.StartTime).TotalHours) * (1 + Fluff));
                     }
                 }
 

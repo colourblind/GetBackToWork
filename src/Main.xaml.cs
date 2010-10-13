@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -43,7 +44,7 @@ namespace GetBackToWork
 
             Hide();
 
-            Left = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width - Width - 5;
+            Left = System.Windows.SystemParameters.PrimaryScreenWidth - Width - 5;
             Top = 5;
 
             DateStarted = null;
@@ -94,9 +95,10 @@ namespace GetBackToWork
 
         private void Reports_Click(object sender, EventArgs e)
         {
+            Hide();
             SaveReport saveReport = new SaveReport();
             saveReport.ShowDialog();
-            Hide();
+            saveReport.Activate();
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
