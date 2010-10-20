@@ -83,6 +83,36 @@ namespace GetBackToWork
                 ClientComboBox.Items.Add(node.InnerText);
         }
 
+        private void Start()
+        {
+            DateStarted = DateTime.Now;
+            GoButton.Content = "Stop";
+            ClientComboBox.IsEnabled = false;
+            SystemTrayIcon.Text = String.Format("{0} since {1}", ClientComboBox.SelectedValue, ((DateTime)DateStarted).ToString("hh:mm"));
+            Hide();
+
+            GoButton.Background = (System.Windows.Media.Brush)Application.Current.Resources["StopButtonBrush"];
+        }
+
+        private void Stop()
+        {
+            Stop(ClientComboBox.SelectedItem.ToString(), NotesTextBox.Text, (DateTime)DateStarted);
+        }
+
+        private void Stop(string client, string notes, DateTime dateStarted)
+        {
+            TimeSlice timeSlice = new TimeSlice(client, notes, dateStarted);
+            timeSlice.Save();
+
+            DateStarted = null;
+            GoButton.Content = "Start";
+            ClientComboBox.IsEnabled = true;
+            NotesTextBox.Text = "";
+            SystemTrayIcon.Text = "Slacking off";
+
+            GoButton.Background = (System.Windows.Media.Brush)Application.Current.Resources["StartButtonBrush"];
+        }
+
         #endregion
 
         #region Event Handlers
@@ -111,9 +141,24 @@ namespace GetBackToWork
         private void Settings_Click(object sender, EventArgs e)
         {
             Hide();
+            IsEnabled = false;
+
             Settings settings = new Settings();
             settings.ShowDialog();
+
+            // Reload the client list and attempt to retain the selected value
+            object selectedValue = ClientComboBox.SelectedValue;
             LoadSettings();
+            ClientComboBox.SelectedValue = selectedValue;
+
+            // If the item was removed, save the timeslice
+            if (ClientComboBox.SelectedValue != selectedValue && IsStarted)
+            {
+                Stop(selectedValue.ToString(), NotesTextBox.Text, (DateTime)DateStarted);
+                NotesTextBox.Text = "";
+            }
+
+            IsEnabled = true;
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
@@ -135,28 +180,9 @@ namespace GetBackToWork
             else
             {
                 if (IsStarted)
-                {
-                    TimeSlice timeSlice = new TimeSlice(ClientComboBox.SelectedItem.ToString(), NotesTextBox.Text, (DateTime)DateStarted);
-                    timeSlice.Save();
-
-                    DateStarted = null;
-                    GoButton.Content = "Start";
-                    ClientComboBox.IsEnabled = true;
-                    NotesTextBox.Text = "";
-                    SystemTrayIcon.Text = "Slacking off";
-
-                    GoButton.Background = (System.Windows.Media.Brush)Application.Current.Resources["StartButtonBrush"];
-                }
+                    Stop();
                 else
-                {
-                    DateStarted = DateTime.Now;
-                    GoButton.Content = "Stop";
-                    ClientComboBox.IsEnabled = false;
-                    SystemTrayIcon.Text = String.Format("{0} since {1}", ClientComboBox.SelectedValue, ((DateTime)DateStarted).ToString("hh:mm"));
-                    Hide();
-
-                    GoButton.Background = (System.Windows.Media.Brush)Application.Current.Resources["StopButtonBrush"];
-                }
+                    Start();
             }
         }
 
