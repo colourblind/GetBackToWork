@@ -33,6 +33,7 @@ namespace GetBackToWork
 
             System.Windows.Forms.ContextMenu systemTrayContextMenu = new System.Windows.Forms.ContextMenu();
             systemTrayContextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Reports", new EventHandler(Reports_Click)));
+            systemTrayContextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Settings", new EventHandler(Settings_Click)));
             systemTrayContextMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Exit", new EventHandler(Exit_Click)));
 
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon();
@@ -98,7 +99,14 @@ namespace GetBackToWork
             Hide();
             SaveReport saveReport = new SaveReport();
             saveReport.ShowDialog();
-            saveReport.Activate();
+        }
+
+        private void Settings_Click(object sender, EventArgs e)
+        {
+            Hide();
+            Settings settings = new Settings();
+            settings.ShowDialog();
+            LoadSettings();
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
