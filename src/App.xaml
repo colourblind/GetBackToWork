@@ -3,9 +3,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     StartupUri="Main.xaml">
     <Application.Resources>
+        <!-- Reusable brush resources -->
         <LinearGradientBrush x:Key="BackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
             <GradientStop Color="#080808" Offset="0.25" />
             <GradientStop Color="#181818" Offset="0.75" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="ActiveBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Color="#303030" Offset="0.25" />
+            <GradientStop Color="#202020" Offset="0.75" />
         </LinearGradientBrush>
         
         <LinearGradientBrush x:Key="StartButtonBrush" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -14,10 +20,11 @@
         </LinearGradientBrush>
 
         <LinearGradientBrush x:Key="StopButtonBrush" StartPoint="0.5,0" EndPoint="0.5,1">
-            <GradientStop Color="#800000" Offset="0.25" />
-            <GradientStop Color="#600000" Offset="0.75" />
+            <GradientStop Color="#900000" Offset="0.25" />
+            <GradientStop Color="#700000" Offset="0.75" />
         </LinearGradientBrush>
-        
+
+        <!-- Default control styles and template overrides -->
         <Style TargetType="{x:Type Label}">
             <Setter Property="Foreground" Value="#a0a0a0" />
         </Style>
@@ -25,23 +32,44 @@
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Background" Value="#000000" />
             <Setter Property="Foreground" Value="#a0a0a0" />
+            <Setter Property="BorderBrush" Value="#a0a0a0" />
         </Style>
 
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Background" Value="#000000" />
             <Setter Property="Foreground" Value="#a0a0a0" />
+            <Setter Property="BorderBrush" Value="#a0a0a0" />
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer Name="PART_ContentHost" Margin="1" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Background" Value="{StaticResource ActiveBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>        
+            </Setter>
         </Style>
         
         <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource ActiveBrush}" />
+            <Setter Property="Foreground" Value="#a0a0a0" />
+            <Setter Property="BorderBrush" Value="#a0a0a0" />
+            <Setter Property="Padding" Value="10" />
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" Padding="10" Background="{TemplateBinding Background}">
+                        <Border CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
                             <Grid>
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" TextBlock.FontWeight="Bold" />
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" TextBlock.FontWeight="UltraBold" />
                             </Grid>
                         </Border>
-
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Control.Foreground">
@@ -59,15 +87,6 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background">
-                <Setter.Value>
-                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                        <GradientStop Color="#303030" Offset="0.25" />
-                        <GradientStop Color="#202020" Offset="0.75" />
-                    </LinearGradientBrush>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Foreground" Value="#a0a0a0" />
         </Style>
     </Application.Resources>
 </Application>
