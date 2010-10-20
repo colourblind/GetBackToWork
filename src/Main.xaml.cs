@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -21,6 +20,14 @@ namespace GetBackToWork
         {
             get;
             set;
+        }
+
+        private bool IsStarted
+        {
+            get
+            {
+                return DateStarted != null;
+            }
         }
 
         #endregion
@@ -89,7 +96,7 @@ namespace GetBackToWork
         private void Exit_Click(object sender, EventArgs e)
         {
             // Finish off the current timeslice if the window is closed before stop is clicked
-            if (DateStarted != null)
+            if (IsStarted)
                 GoButton_Click(this, new RoutedEventArgs());
             Close();
         }
@@ -127,17 +134,7 @@ namespace GetBackToWork
                 MessageBox.Show("You must select a client before tracking time", "Please select a client", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             else
             {
-                if (DateStarted == null)
-                {
-                    DateStarted = DateTime.Now;
-                    GoButton.Content = "Stop";
-                    ClientComboBox.IsEnabled = false;
-                    SystemTrayIcon.Text = String.Format("{0} since {1}", ClientComboBox.SelectedValue, ((DateTime)DateStarted).ToString("hh:mm"));
-                    Hide();
-
-                    GoButton.Background = (System.Windows.Media.Brush)Application.Current.Resources["StopButtonBrush"];
-                }
-                else
+                if (IsStarted)
                 {
                     TimeSlice timeSlice = new TimeSlice(ClientComboBox.SelectedItem.ToString(), NotesTextBox.Text, (DateTime)DateStarted);
                     timeSlice.Save();
@@ -149,6 +146,16 @@ namespace GetBackToWork
                     SystemTrayIcon.Text = "Slacking off";
 
                     GoButton.Background = (System.Windows.Media.Brush)Application.Current.Resources["StartButtonBrush"];
+                }
+                else
+                {
+                    DateStarted = DateTime.Now;
+                    GoButton.Content = "Stop";
+                    ClientComboBox.IsEnabled = false;
+                    SystemTrayIcon.Text = String.Format("{0} since {1}", ClientComboBox.SelectedValue, ((DateTime)DateStarted).ToString("hh:mm"));
+                    Hide();
+
+                    GoButton.Background = (System.Windows.Media.Brush)Application.Current.Resources["StopButtonBrush"];
                 }
             }
         }
