@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Threading;
 using System.Xml;
 
 namespace GetBackToWork
@@ -30,6 +31,12 @@ namespace GetBackToWork
             }
         }
 
+        private DispatcherTimer ToastTimer
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Constructors
@@ -48,7 +55,14 @@ namespace GetBackToWork
             SystemTrayIcon.Visible = true;
             SystemTrayIcon.Icon = new Icon(SystemIcons.Application, 40, 40);
             SystemTrayIcon.Text = "Slacking off";
+            SystemTrayIcon.BalloonTipTitle = "Get Back To Work";
+            SystemTrayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             SystemTrayIcon.Click += new EventHandler(SystemTrayIcon_Click);
+
+            ToastTimer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
+            ToastTimer.Tick += new EventHandler(ToastTimer_Tick);
+            ToastTimer.Interval = new TimeSpan(0, 15, 0);
+            ToastTimer.Start();
 
             Hide();
 
@@ -184,6 +198,12 @@ namespace GetBackToWork
                 else
                     Start();
             }
+        }
+
+        void ToastTimer_Tick(object sender, EventArgs e)
+        {
+            SystemTrayIcon.BalloonTipText = "Currently on " + (IsStarted ? ClientComboBox.SelectedValue.ToString() : "NOTHING");
+            SystemTrayIcon.ShowBalloonTip(4);
         }
 
         #endregion
