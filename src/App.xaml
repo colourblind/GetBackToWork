@@ -13,6 +13,11 @@
             <GradientStop Color="#303030" Offset="0.25" />
             <GradientStop Color="#202020" Offset="0.75" />
         </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="ButtonBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+            <GradientStop Color="#404040" Offset="0.25" />
+            <GradientStop Color="#303030" Offset="0.75" />
+        </LinearGradientBrush>
         
         <LinearGradientBrush x:Key="StartButtonBrush" StartPoint="0.5,0" EndPoint="0.5,1">
             <GradientStop Color="#007000" Offset="0.25" />
@@ -57,7 +62,7 @@
         </Style>
         
         <Style TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="{StaticResource ActiveBrush}" />
+            <Setter Property="Background" Value="{StaticResource ButtonBrush}" />
             <Setter Property="Foreground" Value="#a0a0a0" />
             <Setter Property="BorderBrush" Value="#a0a0a0" />
             <Setter Property="Padding" Value="10" />
