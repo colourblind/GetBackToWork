@@ -14,6 +14,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Label Name="label1" Grid.Column="0" Grid.Row="0" Height="25" Content="Start Date" Margin="0,0,0,5" />
             <Toolkit:DatePicker Name="StartDatePicker" Grid.Column="1" Grid.Row="0" BorderThickness="0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Stretch" xmlns:Toolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit" SelectedDateChanged="StartDatePicker_SelectedDateChanged" />
@@ -21,6 +22,9 @@
             <Toolkit:DatePicker Name="EndDatePicker" Grid.Column="1" Grid.Row="1" BorderThickness="0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Stretch" xmlns:Toolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit" SelectedDateChanged="EndDatePicker_SelectedDateChanged" />
             <Label Name="label3" ToolTip="Amount of padding on the times, in percent" Grid.Column="0" Grid.Row="2" Height="25" Content="Fat" Margin="0,0,0,5" />
             <Slider Name="FluffSlider" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0"  Grid.Column="1" Grid.Row="2" Height="25" Minimum="-100" Maximum="100" />
+            <Label Name="label4" Grid.Column="0" Grid.Row="3" Height="25" Content="Filename" Margin="0,0,0,5" />
+            <TextBox Name="FilenameTextBox" Grid.Column="1" Grid.Row="3" Height="25" Width="155" HorizontalAlignment="Left" IsReadOnly="True" />
+            <Button Name="SelectFileButton" Grid.Column="1" Grid.Row="3" Height="25" HorizontalAlignment="Right" Padding="4,0,4,0" Click="SelectFileButton_Click" Content="Select" />
         </Grid>
         <Button Name="SaveButton" Content="Save" Click="SaveButton_Click" VerticalAlignment="Bottom" />
     </Grid>
