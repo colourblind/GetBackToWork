@@ -33,6 +33,10 @@
         <Style TargetType="{x:Type Label}">
             <Setter Property="Foreground" Value="#a0a0a0" />
         </Style>
+
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="#a0a0a0" />
+        </Style>
         
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Background" Value="#000000" />
