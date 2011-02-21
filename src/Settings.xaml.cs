@@ -24,6 +24,21 @@ namespace GetBackToWork
             ClientsListBox.Items.Clear();
             foreach (XmlNode node in xml.DocumentElement.SelectNodes("Client"))
                 ClientsListBox.Items.Add(node.InnerText);
+
+            XmlNode toastNode = xml.DocumentElement.SelectSingleNode("Toast");
+            if (toastNode == null)
+            {
+                ToastEnabledCheckBox.IsChecked = true;
+                ToastTimeComboBox.SelectedValue = 16;
+            }
+            else
+            {
+                ToastEnabledCheckBox.IsChecked = Convert.ToBoolean(toastNode.Attributes["enabled"].Value);
+                for (int i = 1; i < 128; i *= 2)
+                    ToastTimeComboBox.Items.Add(i);
+                ToastTimeComboBox.SelectedValue = Convert.ToInt32(toastNode.Attributes["interval"].Value);
+            }
+
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -40,10 +55,23 @@ namespace GetBackToWork
                 xml.DocumentElement.AppendChild(node);
             }
 
+            XmlNode toastNode = xml.CreateElement("Toast");
+            XmlAttribute toastEnabledAttrib = xml.CreateAttribute("enabled");
+            toastEnabledAttrib.Value = Convert.ToString(ToastEnabledCheckBox.IsChecked);
+            XmlAttribute toastTimeAttrib = xml.CreateAttribute("interval");
+            toastTimeAttrib.Value = Convert.ToString(ToastTimeComboBox.SelectedValue);
+            toastNode.Attributes.Append(toastEnabledAttrib);
+            toastNode.Attributes.Append(toastTimeAttrib);
+            xml.DocumentElement.AppendChild(toastNode);
+
             xml.Save(Constants.SettingsPath);
 
             IsDirty = false;
+            Close();
+        }
 
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
             Close();
         }
 

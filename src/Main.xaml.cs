@@ -59,11 +59,6 @@ namespace GetBackToWork
             SystemTrayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             SystemTrayIcon.Click += new EventHandler(SystemTrayIcon_Click);
 
-            ToastTimer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
-            ToastTimer.Tick += new EventHandler(ToastTimer_Tick);
-            ToastTimer.Interval = new TimeSpan(0, 15, 0);
-            ToastTimer.Start();
-
             Hide();
 
             Left = System.Windows.SystemParameters.PrimaryScreenWidth - Width - 5;
@@ -95,6 +90,23 @@ namespace GetBackToWork
             ClientComboBox.Items.Clear();
             foreach (XmlNode node in xml.DocumentElement.SelectNodes("Client"))
                 ClientComboBox.Items.Add(node.InnerText);
+
+            int toastMins = 15;
+            bool toastEnabled = true;
+            XmlNode toastNode = xml.DocumentElement.SelectSingleNode("Toast");
+            if (toastNode != null)
+            {
+                toastEnabled = Convert.ToBoolean(toastNode.Attributes["enabled"].Value);
+                toastMins = Convert.ToInt32(toastNode.Attributes["interval"].Value);
+            }
+
+            if (toastEnabled)
+            {
+                ToastTimer = new DispatcherTimer(DispatcherPriority.Normal, Dispatcher);
+                ToastTimer.Tick += new EventHandler(ToastTimer_Tick);
+                ToastTimer.Interval = new TimeSpan(0, toastMins, 0);
+                ToastTimer.Start();
+            }
         }
 
         private void Start()

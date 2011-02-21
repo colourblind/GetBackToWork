@@ -4,22 +4,37 @@
     Background="{StaticResource BackgroundBrush}" BorderBrush="#282828" BorderThickness="1" Padding="0" Margin="0"    
     Title="Settings" Height="300" Width="300" ShowInTaskbar="False" Closing="Window_Closing">
     <Grid Margin="10">
-        <StackPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="65" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="30" />
-            </Grid.RowDefinitions>
-            <ListBox Name="ClientsListBox" Height="150" VerticalAlignment="Top" SelectionMode="Single" Grid.Row="0" Grid.Column="0" />
-            <Button Name="DeleteClientButton" Content="Remove" Width="55" Height="24" HorizontalAlignment="Right" Padding="0" ToolTip="Remove the select client from the list" Click="DeleteClientButton_Click" Grid.Row="0" Grid.Column="1" />
-            <TextBox Name="ClientTextBox" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-            <Button Name="AddClientButton" Content="Add" Width="55" Height="24" HorizontalAlignment="Right" Padding="0" Click="AddClientButton_Click" Grid.Row="1" Grid.Column="1" />
-        </Grid>
-        <Button Name="SaveButton" Content="Save" Click="SaveButton_Click" VerticalAlignment="Bottom" />
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0">
+            <TabItem Name="InterfaceTab" Header="Interface">
+                <StackPanel>
+                    <TextBlock Text="Toast enabled" />
+                    <CheckBox Name="ToastEnabledCheckBox" />
+                    <TextBlock Text="Toast time (m)" />
+                    <ComboBox Name="ToastTimeComboBox" IsEditable="False" />
+                </StackPanel>
+            </TabItem>
+            <TabItem Name="ClientsTab" Header="Clients">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="65" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <ListBox Name="ClientsListBox" SelectionMode="Single" Grid.Row="0" Grid.Column="0" />
+                    <Button Name="DeleteClientButton" Content="Remove" Width="55" Height="24" HorizontalAlignment="Right" Padding="0" ToolTip="Remove the select client from the list" Click="DeleteClientButton_Click" Grid.Row="0" Grid.Column="1" />
+                    <TextBox Name="ClientTextBox" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                    <Button Name="AddClientButton" Content="Add" Width="55" Height="24" HorizontalAlignment="Right" Padding="0" Click="AddClientButton_Click" Grid.Row="1" Grid.Column="1" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button Grid.Row="1" Name="CancelButton" Content="Cancel" Click="CancelButton_Click" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Left" />
+        <Button Grid.Row="1" Name="SaveButton" Content="Save" Click="SaveButton_Click" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
     </Grid>
 </Window>
