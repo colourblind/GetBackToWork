@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using System.Xml;
@@ -87,9 +89,8 @@ namespace GetBackToWork
             XmlDocument xml = new XmlDocument();
             xml.Load(Constants.SettingsPath);
 
-            ClientComboBox.Items.Clear();
-            foreach (XmlNode node in xml.DocumentElement.SelectNodes("Client"))
-                ClientComboBox.Items.Add(node.InnerText);
+            ClientComboBox.Items.SortDescriptions.Add(new SortDescription("", ListSortDirection.Ascending));
+            ClientComboBox.ItemsSource = xml.DocumentElement.SelectNodes("Client").Cast<XmlNode>().Select(o => o.InnerText);
 
             int toastMins = 15;
             bool toastEnabled = true;

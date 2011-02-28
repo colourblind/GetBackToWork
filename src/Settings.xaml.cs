@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Xml;
 
@@ -6,6 +9,12 @@ namespace GetBackToWork
 {
     public partial class Settings : Window
     {
+        private ObservableCollection<string> Source
+        {
+            get;
+            set;
+        }
+
         private bool IsDirty
         {
             get;
@@ -21,9 +30,10 @@ namespace GetBackToWork
             XmlDocument xml = new XmlDocument();
             xml.Load(Constants.SettingsPath);
 
-            ClientsListBox.Items.Clear();
-            foreach (XmlNode node in xml.DocumentElement.SelectNodes("Client"))
-                ClientsListBox.Items.Add(node.InnerText);
+            Source = new ObservableCollection<string>(xml.DocumentElement.SelectNodes("Client").Cast<XmlNode>().Select(o => o.InnerText));
+
+            ClientsListBox.Items.SortDescriptions.Add(new SortDescription("", ListSortDirection.Ascending));
+            ClientsListBox.ItemsSource = Source;
 
             XmlNode toastNode = xml.DocumentElement.SelectSingleNode("Toast");
             if (toastNode == null)
@@ -48,7 +58,7 @@ namespace GetBackToWork
 
             xml.DocumentElement.RemoveAll();
 
-            foreach (object item in ClientsListBox.Items)
+            foreach (string item in Source)
             {
                 XmlNode node = xml.CreateElement("Client");
                 node.InnerText = item.ToString();
@@ -79,7 +89,7 @@ namespace GetBackToWork
         {
             if (!String.IsNullOrEmpty(ClientTextBox.Text) && !ClientsListBox.Items.Contains(ClientTextBox.Text))
             {
-                ClientsListBox.Items.Add(ClientTextBox.Text);
+                Source.Add(ClientTextBox.Text);
                 ClientTextBox.Clear();
                 IsDirty = true;
             }
