@@ -28,6 +28,9 @@
             <GradientStop Color="#900000" Offset="0.25" />
             <GradientStop Color="#700000" Offset="0.75" />
         </LinearGradientBrush>
+        
+        <!-- Overriding system colours -->
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#404040" />
 
         <!-- Default control styles and template overrides -->
         <Style TargetType="{x:Type Label}">
@@ -44,10 +47,20 @@
             <Setter Property="BorderBrush" Value="#808080" />
         </Style>
 
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Background" Value="#000000" />
+            <Setter Property="Foreground" Value="#a0a0a0" />
+            <Setter Property="BorderBrush" Value="#808080" />
+        </Style>
+
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Background" Value="#000000" />
             <Setter Property="Foreground" Value="#a0a0a0" />
             <Setter Property="BorderBrush" Value="#a0a0a0" />
+        </Style>
+        
+        <Style TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Background" Value="#000000" />
         </Style>
 
         <Style TargetType="{x:Type TextBox}">
