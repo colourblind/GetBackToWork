@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Text;
 using System.Xml;
 
 namespace GetBackToWork
@@ -57,7 +59,6 @@ namespace GetBackToWork
         public void Create()
         {
             DateTime dateIndex = StartDate.Date;
-            Dictionary<string, TimeSpan> results = new Dictionary<string, TimeSpan>();
 
             DataTable data = new DataTable();
             data.Columns.Add("Date", typeof(DateTime));
@@ -102,11 +103,56 @@ namespace GetBackToWork
                 dateIndex = dateIndex.AddDays(1);
             }
 
-            StreamWriter writer = new StreamWriter(Filename);
-            Utils.DataTableToCsv(writer, data, new Dictionary<string, string> { { "Hours", "{0:n1}" } });
-            writer.Close();
+            List<object> postMungeData = new List<object>();
+            foreach (DataRow row in data.Rows)
+                postMungeData.Add(new { Client = row["Client"], Comments = row["Comments"], Date = row["Date"], Hours = row["Hours"] });
+
+            ReportFormat reportFormat = new ReportFormat("\"{Client}\",\"{Comments}\",\"{Date:d}\",\"{Hours:f1}\"\r\n");
+            StreamWriter writer = null;
+            try
+            {
+                writer = new StreamWriter(Filename);
+                writer.Write(reportFormat.Create(postMungeData));
+            }
+            finally
+            {
+                if (writer != null)
+                    writer.Close();
+            }
         }
 
         #endregion
+    }
+
+    class ReportFormat
+    {
+        private string HeaderTemplate { get; set; }
+        private string ItemTemplate { get; set; }
+        private string FooterTemplate { get; set; }
+
+        public ReportFormat(string itemTemplate)
+            : this("", itemTemplate, "")
+        {
+
+        }
+
+        public ReportFormat(string headerTemplate, string itemTemplate, string footerTemplate)
+        {
+            HeaderTemplate = headerTemplate;
+            ItemTemplate = itemTemplate;
+            FooterTemplate = footerTemplate;
+        }
+
+        public string Create(IEnumerable data)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(HeaderTemplate);
+
+            foreach (object obj in data)
+                builder.Append(NamedFormatter.Format(ItemTemplate, obj));
+
+            builder.Append(FooterTemplate);
+            return builder.ToString();
+        }
     }
 }
