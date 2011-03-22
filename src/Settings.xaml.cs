@@ -99,7 +99,7 @@ namespace GetBackToWork
         {
             if (ClientsListBox.SelectedIndex >= 0)
             {
-                ClientsListBox.Items.RemoveAt(ClientsListBox.SelectedIndex);
+                Source.Remove(ClientsListBox.SelectedValue.ToString());
                 IsDirty = true;
             }
         }
