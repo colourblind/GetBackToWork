@@ -126,9 +126,36 @@ namespace GetBackToWork
 
     class ReportFormat
     {
+        #region Properties
+
         private string HeaderTemplate { get; set; }
         private string ItemTemplate { get; set; }
         private string FooterTemplate { get; set; }
+
+        private static IDictionary<string, ReportFormat> LoadedReports { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        static ReportFormat()
+        {
+            LoadedReports = new Dictionary<string, ReportFormat>();
+            XmlDocument xml = new XmlDocument();
+            xml.Load(Constants.SettingsPath);
+
+            XmlNode reports = xml.DocumentElement.SelectSingleNode("Reports");
+            if (reports == null)
+            {
+                reports = xml.CreateElement("Reports");
+                CreateDefaults(reports, xml);
+                xml.DocumentElement.AppendChild(reports);
+                xml.Save(Constants.SettingsPath);
+            }
+
+            foreach (XmlNode node in reports.SelectNodes("Report"))
+                LoadedReports.Add(node.Attributes["name"].Value, new ReportFormat(node));
+        }
 
         public ReportFormat(string itemTemplate)
             : this("", itemTemplate, "")
@@ -143,6 +170,21 @@ namespace GetBackToWork
             FooterTemplate = footerTemplate;
         }
 
+        public ReportFormat(XmlNode node)
+        {
+            XmlNode headerNode = node.SelectSingleNode("HeaderTemplate");
+            XmlNode itemNode = node.SelectSingleNode("ItemTemplate");
+            XmlNode footerNode = node.SelectSingleNode("FooterTemplate");
+
+            HeaderTemplate = headerNode == null ? String.Empty : headerNode.InnerText;
+            ItemTemplate = itemNode.InnerText;
+            FooterTemplate = footerNode == null ? String.Empty : footerNode.InnerText;
+        }
+
+        #endregion
+
+        #region Methods
+
         public string Create(IEnumerable data)
         {
             StringBuilder builder = new StringBuilder();
@@ -154,5 +196,47 @@ namespace GetBackToWork
             builder.Append(FooterTemplate);
             return builder.ToString();
         }
+
+        public static IEnumerable<string> GetReportNames()
+        {
+            return LoadedReports.Keys;
+        }
+
+        public static ReportFormat GetReportFormat(string name)
+        {
+            return LoadedReports[name];
+        }
+
+        public static void CreateDefaults(XmlNode parent, XmlDocument xml)
+        {
+            // CSV
+            XmlNode csvReport = xml.CreateElement("Report");
+            csvReport.Attributes.Append(xml.CreateAttribute("name"));
+            csvReport.Attributes["name"].Value = "CSV";
+            XmlNode csvFormat = xml.CreateElement("ItemTemplate");
+            csvFormat.AppendChild(xml.CreateTextNode("\"{Client}\",\"{Comments}\",\"{Date:d}\",\"{Hours:f1}\"\r\n"));
+            csvReport.AppendChild(csvFormat);
+            parent.AppendChild(csvReport);
+
+            // XML
+            XmlNode xmlReport = xml.CreateElement("Report");
+            xmlReport.Attributes.Append(xml.CreateAttribute("name"));
+            xmlReport.Attributes["name"].Value = "XML";
+
+            XmlNode xmlHeadFormat = xml.CreateElement("HeaderTemplate");
+            xmlHeadFormat.AppendChild(xml.CreateTextNode("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<Times>\r\n"));
+            XmlNode xmlItemFormat = xml.CreateElement("ItemTemplate");
+            xmlItemFormat.AppendChild(xml.CreateTextNode("   <Time client=\"{Client}\" comments=\"{Comments}\" date=\"{Date:d}\" hours=\"{Hours:f1}\" />\r\n"));
+            XmlNode xmlFootFormat = xml.CreateElement("FooterTemplate");
+            xmlFootFormat.AppendChild(xml.CreateTextNode("</Times>\r\n"));
+
+            xmlReport.AppendChild(xmlHeadFormat);
+            xmlReport.AppendChild(xmlItemFormat);
+            xmlReport.AppendChild(xmlFootFormat);
+            parent.AppendChild(xmlReport);
+
+        }
+
+        #endregion
     }
 }
