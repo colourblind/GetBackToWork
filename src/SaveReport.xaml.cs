@@ -13,6 +13,9 @@ namespace GetBackToWork
             DateTime now = DateTime.Now;
             StartDatePicker.SelectedDate = new DateTime(now.Year, now.Month, 1);
             EndDatePicker.SelectedDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
+            
+            foreach (string name in ReportFormat.GetReportNames())
+                FormatListBox.Items.Add(name);
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
