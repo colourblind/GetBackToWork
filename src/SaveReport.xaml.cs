@@ -29,7 +29,7 @@ namespace GetBackToWork
                 Report report = new Report(FilenameTextBox.Text, (DateTime)StartDatePicker.SelectedDate, (DateTime)EndDatePicker.SelectedDate);
                 report.Fluff = Convert.ToDecimal(FluffSlider.Value / 100);
 
-                report.Create();
+                report.Create(ReportFormat.GetReportFormat(FormatListBox.SelectedValue.ToString()));
 
                 Close();
             }

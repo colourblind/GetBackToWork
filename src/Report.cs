@@ -56,7 +56,7 @@ namespace GetBackToWork
 
         #region Methods
 
-        public void Create()
+        public void Create(ReportFormat format)
         {
             DateTime dateIndex = StartDate.Date;
 
@@ -107,12 +107,11 @@ namespace GetBackToWork
             foreach (DataRow row in data.Rows)
                 postMungeData.Add(new { Client = row["Client"], Comments = row["Comments"], Date = row["Date"], Hours = row["Hours"] });
 
-            ReportFormat reportFormat = new ReportFormat("\"{Client}\",\"{Comments}\",\"{Date:d}\",\"{Hours:f1}\"\r\n");
             StreamWriter writer = null;
             try
             {
                 writer = new StreamWriter(Filename);
-                writer.Write(reportFormat.Create(postMungeData));
+                writer.Write(format.Create(postMungeData));
             }
             finally
             {
@@ -170,7 +169,7 @@ namespace GetBackToWork
             FooterTemplate = footerTemplate;
         }
 
-        public ReportFormat(XmlNode node)
+        private ReportFormat(XmlNode node)
         {
             XmlNode headerNode = node.SelectSingleNode("HeaderTemplate");
             XmlNode itemNode = node.SelectSingleNode("ItemTemplate");
